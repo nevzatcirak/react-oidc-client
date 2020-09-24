@@ -1,0 +1,10 @@
+{
+    "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+    "linterOptions": {
+      "exclude": [
+        "*.json",
+        "node_modules/**/*.ts"
+      ]
+    }
+  }
+  
