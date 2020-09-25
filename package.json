@@ -1,5 +1,5 @@
 {
-  "name": "react-oidc-client",
+  "name": "@nevzatcirak/react-oidc-client",
   "version": "1.0.0",
   "description": "React components and service for oidc authentication",
   "main": "dist/index.js",
