@@ -23,7 +23,6 @@ export const CallbackContainer = ({ callbackComponentOverride, history }: Callba
     async function signIn() {
       const authService : AuthenticationService = AuthenticationService.getInstance();
       try {
-        // In here we are most probably going to have userManager if not the error will be catched
         const user = await authService.getUserManager()!.signinRedirectCallback()
         if (user.state.url) {
           history.push(user.state.url)

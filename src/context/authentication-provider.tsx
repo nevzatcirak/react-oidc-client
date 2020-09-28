@@ -13,12 +13,16 @@ import {
   addOidcEvents,
   login,
   logout,
+  renewToken,
   oidcReducer,
   removeOidcEvents,
 } from "../events/oidc-events";
 import { CallbackContainer } from "../components/callback";
 import { OidcRoutes } from "../components/oidc-routes";
-import { SessionLostContainer, SessionLostProps } from "../components/session-lost";
+import {
+  SessionLostContainer,
+  SessionLostProps,
+} from "../components/session-lost";
 
 export interface AuthenticationContextState {
   isLoading: boolean;
@@ -27,6 +31,7 @@ export interface AuthenticationContextState {
   error?: string;
   login: () => Promise<void>;
   logout: () => Promise<void>;
+  renewToken: () => Promise<void>;
 }
 
 export const AuthenticationContext = createContext<
@@ -73,7 +78,10 @@ const setDefaultState = (configuration: UserManagerSettings) => {
 };
 
 export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
-  const [oidcState, dispatch] = useReducer(oidcReducer,setDefaultState(props.configuration));
+  const [oidcState, dispatch] = useReducer(
+    oidcReducer,
+    setDefaultState(props.configuration)
+  );
 
   useEffect(() => {
     dispatch({ type: "ON_LOADING" });
@@ -115,14 +123,12 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
         oidcUser,
         error,
         authenticating,
-        login: useCallback(
-          () =>
-            login(dispatch, history.location, history)(),
-          [history, oidcState.userManager]
-        ),
-        logout: useCallback(() => logout(dispatch)(), [
+        login: useCallback(() => login(dispatch, history.location, history)(), [
+          history,
           oidcState.userManager,
         ]),
+        logout: useCallback(() => logout(dispatch)(), [oidcState.userManager]),
+        renewToken: useCallback(() => renewToken()(), [oidcState.userManager]),
       }}
     >
       <OidcRoutes

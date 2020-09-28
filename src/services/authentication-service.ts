@@ -73,7 +73,7 @@ export class AuthenticationService {
       }
       this.numberAuthentication++
       const url = callbackPath || location.pathname + (location.search || '')
-    
+      
       if (this.isRequireSignin(oidcUser, isForce)) {
         this.userRequested = true
         await this.userManager.signinRedirect({ data: { url } })
@@ -103,6 +103,14 @@ export class AuthenticationService {
     if (oidcUser) {
       await this.userManager.signoutRedirect()
     }
+  }
+
+  /**
+   * Sends renew token request
+   */
+  public async renewToken(): Promise<User | undefined> {
+    const oidcUser = await this.userManager.getUser();
+    if (oidcUser) return await this.userManager.signinSilent();
   }
 
   /**
