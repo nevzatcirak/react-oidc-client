@@ -1,36 +1,48 @@
-import { Button, Container, Typography } from '@material-ui/core'
-import { History } from 'history'
-import React, { ElementType } from 'react'
-import { AuthenticationService } from '../services/authentication-service'
+import { Container, Typography } from "@material-ui/core";
+import { History } from "history";
+import React, { ElementType, useEffect } from "react";
+import { AuthenticationService } from "../services/authentication-service";
 
 export type SessionLostProps = {
-  onAuthenticate: () => void
-}
+  onAuthenticate: () => void;
+};
 
-export const SessionLost = ({ onAuthenticate }: SessionLostProps) => (
+export const SessionLost = () => (
   <Container maxWidth="sm">
     <Typography component="h1" gutterBottom>
       Session timed out
     </Typography>
-    <Typography variant="body1">Your session has expired. Please re-authenticate yourself.</Typography>
-    <Button onClick={onAuthenticate}>re-authenticate</Button>
+    <Typography variant="body1">
+      Your session has expired. Trying to reauthenticate.
+    </Typography>
   </Container>
-)
+);
 
 type SessionLostContainerProps = {
-  history: History
-  SessionLostComponentOverride?: ElementType<SessionLostProps>
-}
+  history: History;
+  SessionLostComponentOverride?: ElementType<SessionLostProps>;
+  autoAuthenticate: boolean;
+};
 
-export const SessionLostContainer = ({ history, SessionLostComponentOverride }: SessionLostContainerProps) => {
-  const callbackPath = history.location.search.replace('?path=', '')
+export const SessionLostContainer = ({
+  history,
+  SessionLostComponentOverride,
+  autoAuthenticate,
+}: SessionLostContainerProps) => {
+  const callbackPath = history.location.search.replace("?path=", "");
+
   const onAuthenticate = () => {
-    const authService : AuthenticationService = AuthenticationService.getInstance();
-    authService.authenticate(history.location, history)(true, callbackPath)
-  }
+    const authService: AuthenticationService = AuthenticationService.getInstance();
+    authService.authenticate(history.location, history)(true, callbackPath);
+  };
+
+  useEffect(() => {
+    if (autoAuthenticate) onAuthenticate();
+  }, []);
+
   return SessionLostComponentOverride ? (
     <SessionLostComponentOverride onAuthenticate={onAuthenticate} />
   ) : (
-    <SessionLost onAuthenticate={onAuthenticate} />
-  )
-}
+    <SessionLost />
+  );
+};

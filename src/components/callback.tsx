@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 import { Container, Typography } from '@material-ui/core'
 import { History } from 'history'
 import React, { ReactNode, useEffect } from 'react'
@@ -23,7 +22,6 @@ export const CallbackContainer = ({ callbackComponentOverride, history }: Callba
     async function signIn() {
       const authService : AuthenticationService = AuthenticationService.getInstance();
       try {
-        // In here we are most probably going to have userManager if not the error will be catched
         const user = await authService.getUserManager()!.signinRedirectCallback()
         if (user.state.url) {
           history.push(user.state.url)
@@ -31,6 +29,7 @@ export const CallbackContainer = ({ callbackComponentOverride, history }: Callba
           console.warn('no location in state')
         }
       } catch (error) {
+        console.error(`Authentication could not be done. Detailed message : ${error.message}`)
         history.push(`/authentication/not-authenticated?message=${encodeURIComponent(error.message)}`)
       }
     }

@@ -1,5 +1,5 @@
-import { History, Location } from 'history'
 import { Log, User, UserManager, UserManagerSettings } from "oidc-client";
+import { History, Location } from 'history';
 
 export class AuthenticationService {
   private static instance: AuthenticationService;
@@ -103,6 +103,14 @@ export class AuthenticationService {
     if (oidcUser) {
       await this.userManager.signoutRedirect()
     }
+  }
+
+  /**
+   * Sends renew token request
+   */
+  public async renewToken(): Promise<User | undefined> {
+    const oidcUser = await this.userManager.getUser();
+    if (oidcUser) return await this.userManager.signinSilent();
   }
 
   /**
