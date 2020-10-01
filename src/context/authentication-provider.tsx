@@ -14,9 +14,9 @@ import {
   login,
   logout,
   renewToken,
-  oidcReducer,
   removeOidcEvents,
-} from "./oidc-events";
+} from "./oidc-actions";
+import { oidcReducer } from "./oidc-reducer";
 import { CallbackContainer } from "../components/callback";
 import { OidcRoutes } from "../components/oidc-routes";
 import {
