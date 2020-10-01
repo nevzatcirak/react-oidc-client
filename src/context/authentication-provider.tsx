@@ -16,7 +16,7 @@ import {
   renewToken,
   oidcReducer,
   removeOidcEvents,
-} from "../events/oidc-events";
+} from "./oidc-events";
 import { CallbackContainer } from "../components/callback";
 import { OidcRoutes } from "../components/oidc-routes";
 import {

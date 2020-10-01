@@ -1,24 +1,33 @@
-import { AuthenticationProvider, UserManagerSettings } from './index'
-import React, { PropsWithChildren } from 'react'
-import { useHistory } from 'react-router-dom'
+import {
+  AuthenticationProvider,
+  OidcSecure,
+  UserManagerSettings,
+} from "./index";
+import React, { ReactNode } from "react";
+import { useHistory } from "react-router-dom";
+import { getBoolValue } from "./utils/common-utils";
 
-export const configuration: UserManagerSettings = {
-  client_id: 'react',
-  // automaticSilentRenew: true,
-  redirect_uri: 'http://localhost:3000/authentication/callback',
-  response_type: 'code',
-  post_logout_redirect_uri: 'http://localhost:3000/',
-  scope: 'openid profile email',
-  authority: 'http://localhost:8080/auth/realms/master',
-  silent_redirect_uri: 'http://localhost:3000/authentication/silent_callback',
+export interface AuthProviderProps {
+  children: ReactNode;
+  configuration: UserManagerSettings;
+  isActive?: Boolean;
 }
 
-export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
-  const history = useHistory()
+export const AuthProvider = (props: AuthProviderProps) => {
+  const history = useHistory();
 
-  return (
-    <AuthenticationProvider configuration={configuration} history={history}>
-      {children}
-    </AuthenticationProvider>
-  )
-}
+  const checkProviderActivity = () => {
+    if (getBoolValue(props.isActive))
+      return (
+        <AuthenticationProvider
+          configuration={props.configuration}
+          history={history}
+        >
+          <OidcSecure history={history}>{props.children}</OidcSecure>
+        </AuthenticationProvider>
+      );
+    else return <>{props.children}</>;
+  };
+
+  return checkProviderActivity();
+};

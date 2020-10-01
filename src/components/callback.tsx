@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 import { Container, Typography } from '@material-ui/core'
 import { History } from 'history'
 import React, { ReactNode, useEffect } from 'react'
@@ -30,6 +29,7 @@ export const CallbackContainer = ({ callbackComponentOverride, history }: Callba
           console.warn('no location in state')
         }
       } catch (error) {
+        console.error(`Authentication could not be done. Detailed message : ${error.message}`)
         history.push(`/authentication/not-authenticated?message=${encodeURIComponent(error.message)}`)
       }
     }

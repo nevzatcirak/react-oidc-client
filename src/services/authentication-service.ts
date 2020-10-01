@@ -1,5 +1,5 @@
-import { History, Location } from 'history'
 import { Log, User, UserManager, UserManagerSettings } from "oidc-client";
+import { History, Location } from 'history';
 
 export class AuthenticationService {
   private static instance: AuthenticationService;
@@ -73,7 +73,7 @@ export class AuthenticationService {
       }
       this.numberAuthentication++
       const url = callbackPath || location.pathname + (location.search || '')
-      
+    
       if (this.isRequireSignin(oidcUser, isForce)) {
         this.userRequested = true
         await this.userManager.signinRedirect({ data: { url } })
