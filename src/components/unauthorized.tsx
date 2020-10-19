@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const NotAuthorized = () => (
+export const UnAuthorized = () => (
   <div>
     <div>
       Authorization

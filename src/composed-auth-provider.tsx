@@ -1,6 +1,6 @@
 import {
   AuthenticationProvider,
-  OidcSecure,
+  SecureApp,
   UserManagerSettings,
   CustomEvents,
 } from "./index";
@@ -8,14 +8,14 @@ import React, { ReactNode } from "react";
 import { useHistory } from "react-router-dom";
 import { getBoolValue } from "./utils/common-utils";
 
-export interface AuthProviderProps {
+export interface ComposedAuthProviderProps {
   children: ReactNode;
   configuration: UserManagerSettings;
   isActive?: Boolean;
   customEvents?: CustomEvents;
 }
 
-export const AuthProvider = (props: AuthProviderProps) => {
+export const ComposedAuthProvider = (props: ComposedAuthProviderProps) => {
   const history = useHistory();
 
   const checkProviderActivity = () => {
@@ -26,7 +26,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
           history={history}
           customEvents={props.customEvents}
         >
-          <OidcSecure history={history}>{props.children}</OidcSecure>
+          <SecureApp history={history}>{props.children}</SecureApp>
         </AuthenticationProvider>
       );
     else return <>{props.children}</>;

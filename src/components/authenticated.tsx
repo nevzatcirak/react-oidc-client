@@ -12,11 +12,11 @@ export const Callback = () => (
 )
 
 type CallbackContainerProps = {
-  callbackComponentOverride?: ReactNode
+  authenticated?: ReactNode
   history: History
 }
 
-export const CallbackContainer = ({ callbackComponentOverride, history }: CallbackContainerProps) => {
+export const CallbackContainer = ({ authenticated, history }: CallbackContainerProps) => {
   useEffect(() => {
     async function signIn() {
       const authService : AuthenticationService = AuthenticationService.getInstance();
@@ -29,12 +29,12 @@ export const CallbackContainer = ({ callbackComponentOverride, history }: Callba
         }
       } catch (error) {
         console.error(`Authentication could not be done. Detailed message : ${error.message}`)
-        history.push(`/authentication/not-authenticated?message=${encodeURIComponent(error.message)}`)
+        history.push(`/authentication-error?message=${encodeURIComponent(error.message)}`)
       }
     }
 
     signIn()
   }, [history])
 
-  return callbackComponentOverride ? <>{callbackComponentOverride}</> : <Callback />
+  return authenticated ? <>{authenticated}</> : <Callback />
 }
