@@ -1,11 +1,10 @@
-import { Container, Typography } from '@material-ui/core'
 import React from 'react'
 
 export const Authenticating = () => (
-  <Container maxWidth="sm">
-    <Typography component="h1" gutterBottom>
+  <div>
+    <div >
       Authentication is in progress
-    </Typography>
-    <Typography variant="body1">You will be redirected to the login page</Typography>
-  </Container>
+    </div>
+    <div >You will be redirected to the login page</div>
+  </div>
 )

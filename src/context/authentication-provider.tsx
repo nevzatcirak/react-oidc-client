@@ -1,5 +1,5 @@
 import { History } from "history";
-import { User, UserManagerSettings } from "oidc-client";
+import { User, UserManagerSettings, UserManager } from "oidc-client";
 import React, {
   createContext,
   ElementType,
@@ -29,7 +29,7 @@ export interface AuthenticationContextState {
   authenticating?: ReactNode;
   oidcUser?: User;
   error?: string;
-  login: () => Promise<void>;
+  login: (force?: boolean) => Promise<void>;
   logout: () => Promise<void>;
   renewToken: () => Promise<void>;
 }
@@ -42,17 +42,17 @@ export interface CustomEvents {
   /** Subscribe to events raised when user session has been established (or re-established) */
   onUserLoaded?: (user: User) => void;
   /** Subscribe to events raised when a user session has been terminated */
-  onUserUnloaded?: () => void;
+  onUserUnloaded?: (userManager: UserManager) => void;
   /** Subscribe to events raised when the automatic silent renew has failed */
   onSilentRenewError?: (error: Error) => void;
   /** Subscribe to events raised when the user's sign-in status at the OP has changed */
-  onUserSignedOut?: () => void;
+  onUserSignedOut?: (userManager: UserManager) => void;
   /** When `monitorSession` subscribe to events raised when the user session changed */
-  onUserSessionChanged?: () => void;
+  onUserSessionChanged?: (userManager: UserManager) => void;
   /** Subscribe to events raised prior to the access token expiring */
   onAccessTokenExpiring?: () => void;
   /** Subscribe to events raised after the access token has expired */
-  onAccessTokenExpired?: () => void;
+  onAccessTokenExpired?: (userManager: UserManager) => void;
 }
 
 export interface AuthenticationProviderProps {
@@ -82,7 +82,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
     oidcReducer,
     setDefaultState(props.configuration)
   );
-
+  
   useEffect(() => {
     dispatch({ type: "ON_LOADING" });
     addOidcEvents({
@@ -123,7 +123,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
         oidcUser,
         error,
         authenticating,
-        login: useCallback(() => login(dispatch, history.location, history)(), [
+        login: useCallback((force?: boolean) => login(dispatch, history.location, history)(force), [
           history,
           oidcState.userManager,
         ]),
@@ -144,6 +144,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
           <SessionLostContainer
             SessionLostComponentOverride={sessionLost}
             history={history}
+            autoAuthenticate={true}
           />
         }
         configuration={configuration}

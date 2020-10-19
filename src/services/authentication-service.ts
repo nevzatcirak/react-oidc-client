@@ -6,15 +6,17 @@ export class AuthenticationService {
   public userManager: UserManager;
   private userRequested: Boolean = false;
   private numberAuthentication: number = 0;
+  private configuration: UserManagerSettings;
 
   /**
    * The Singleton's constructor should always be private to prevent direct
    * construction calls with the `new` operator.
    */
   private constructor(configuration: UserManagerSettings) {
+    this.configuration = configuration;
     this.userManager = new UserManager(configuration);
     Log.logger = console;
-    Log.level = Log.INFO;
+    Log.level = Log.DEBUG;
   }
 
   /**
@@ -73,7 +75,6 @@ export class AuthenticationService {
       }
       this.numberAuthentication++
       const url = callbackPath || location.pathname + (location.search || '')
-    
       if (this.isRequireSignin(oidcUser, isForce)) {
         this.userRequested = true
         await this.userManager.signinRedirect({ data: { url } })
@@ -101,7 +102,9 @@ export class AuthenticationService {
   public async logout() {
     const oidcUser = await this.userManager.getUser()
     if (oidcUser) {
-      await this.userManager.signoutRedirect()
+      const userManager = new UserManager({ ...this.configuration, response_mode: "query" });
+      await userManager.clearStaleState()
+      await userManager.signoutRedirect()
     }
   }
 

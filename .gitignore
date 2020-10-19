@@ -38,3 +38,6 @@ dist
 
 # npm
 package-lock.json
+
+#tsconfig build file
+tsconfig.tsbuildinfo
