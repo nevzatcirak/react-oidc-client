@@ -1,4 +1,3 @@
-import { Container, Typography } from "@material-ui/core";
 import { History } from "history";
 import React, { ElementType, useEffect } from "react";
 import { AuthenticationService } from "../services/authentication-service";
@@ -8,20 +7,20 @@ export type SessionLostProps = {
 };
 
 export const SessionLost = () => (
-  <Container maxWidth="sm">
-    <Typography component="h1" gutterBottom>
+  <div>
+    <div>
       Session timed out
-    </Typography>
-    <Typography variant="body1">
+    </div>
+    <div>
       Your session has expired. Trying to reauthenticate.
-    </Typography>
-  </Container>
+    </div>
+  </div>
 );
 
 type SessionLostContainerProps = {
   history: History;
   SessionLostComponentOverride?: ElementType<SessionLostProps>;
-  autoAuthenticate: boolean;
+  autoAuthenticate?: boolean;
 };
 
 export const SessionLostContainer = ({

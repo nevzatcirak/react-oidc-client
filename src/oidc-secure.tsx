@@ -1,6 +1,5 @@
 import { History } from "history";
 import React, { ReactNode, useContext, useEffect } from "react";
-import { AuthenticationService } from "./services/authentication-service";
 import { Authenticating } from "./components/authenticating";
 import { AuthenticationContext } from "./context/authentication-provider";
 
@@ -20,11 +19,10 @@ export const OidcSecure = ({ children, history }: OidcSecureProps) => {
       "useOidcAuthentication must be used within a AuthenticationProvider"
     );
   }
-  const { oidcUser, authenticating } = context;
+  const { oidcUser, authenticating, login } = context;
 
   useEffect(() => {
-    const authService: AuthenticationService = AuthenticationService.getInstance();
-    authService.authenticate(history.location, history)();
+    if (!oidcUser) login(true);
   }, [history, oidcUser]);
 
   const requiredAuth = !oidcUser || oidcUser?.expired === true;

@@ -1,15 +1,14 @@
-import { Container, Typography } from '@material-ui/core'
 import { History } from 'history'
 import React, { ReactNode, useEffect } from 'react'
 import { AuthenticationService } from '../services/authentication-service'
 
 export const Callback = () => (
-  <Container maxWidth="sm">
-    <Typography component="h1" gutterBottom>
+  <div>
+    <div>
       Authentication complete
-    </Typography>
-    <Typography variant="body1">You will be redirected to your application.</Typography>
-  </Container>
+    </div>
+    <div >You will be redirected to your application.</div>
+  </div>
 )
 
 type CallbackContainerProps = {

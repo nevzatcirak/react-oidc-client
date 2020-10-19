@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
+    "outDir": "dist/",
+    "rootDir": "src/",
     "pretty": true,
     "target": "es6",
     "module": "esnext",
@@ -15,8 +15,7 @@
     "allowJs": true,
 
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "composite": true,
     "noEmitOnError": true,
 
@@ -39,5 +38,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

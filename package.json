@@ -4,13 +4,23 @@
   "description": "React components and service for oidc authentication",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
+  "keywords": [
+    "react",
+    "oidc",
+    "browser",
+    "typescript",
+    "oidc-client",
+    "nevzatcirak"
+  ],
   "files": [
     "dist",
     "src"
   ],
   "scripts": {
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
-    "build": "tsc -b"
+    "prebuild": "rimraf dist",
+    "build": "tsc -b",
+    "publish": "npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -22,8 +32,6 @@
     "url": "https://github.com/nevzatcirak/react-oidc-client/issues"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@types/history": "^4.7.7",
     "oidc-client": "^1.10.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -36,14 +44,16 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.2",
+    "@types/history": "^4.7.7",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.5.0",
     "jest": "^26.2.2",
     "ts-jest": "^26.1.4",
-    "typescript": "^4.0.2"
+    "typescript": "^3.9.7"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "homepage": "https://github.com/nevzatcirak/react-oidc-client#readme"
 }
