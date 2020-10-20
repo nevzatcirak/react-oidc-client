@@ -5,7 +5,7 @@ export function useAuthentication() {
   const context = useContext(AuthenticationContext)
 
   if (!context) {
-    throw new Error('useOidcAuthentication must be used within a AuthenticationProvider')
+    throw new Error('useAuthentication must be used within a AuthenticationProvider')
   }
 
   return context
