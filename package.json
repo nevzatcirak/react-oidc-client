@@ -1,6 +1,6 @@
 {
   "name": "@nevzatcirak/react-oidc-client",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "React components and service for oidc authentication",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -20,7 +20,7 @@
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
     "prebuild": "rimraf dist",
     "build": "tsc -b",
-    "publish": "npm publish --access public"
+    "p": "npm publish --access public"
   },
   "repository": {
     "type": "git",
