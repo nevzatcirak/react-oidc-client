@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { AuthenticationContext } from './context/authentication-provider'
 
-export function useOidcAuthentication() {
+export function useAuthentication() {
   const context = useContext(AuthenticationContext)
 
   if (!context) {

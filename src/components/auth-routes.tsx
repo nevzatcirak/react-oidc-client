@@ -1,24 +1,24 @@
 import { UserManagerSettings } from 'oidc-client'
 import React, { memo, ReactNode, useEffect, useState } from 'react'
 import { getPath } from '../utils/route-utils'
-import { NotAuthenticated } from './not-authenticated'
-import { NotAuthorized } from './not-authorized'
+import { UnAuthenticated } from './unauthenticated'
+import { UnAuthorized } from './unauthorized'
 import { SilentCallback } from './silent-callback'
 
 export type OidcRoutesProps = {
-  notAuthenticated?: ReactNode
-  notAuthorized?: ReactNode
+  unauthenticated?: ReactNode
+  unauthorized?: ReactNode
   callbackComponent: ReactNode
-  sessionLost?: ReactNode
+  sessionlost?: ReactNode
   configuration: UserManagerSettings
   children: ReactNode
 }
 
-const OidcRoutesComponent = ({
-  notAuthenticated = <NotAuthenticated />,
-  notAuthorized = <NotAuthorized />,
+const AuthRoutesComponent = ({
+  unauthenticated = <UnAuthenticated />,
+  unauthorized = <UnAuthorized />,
   callbackComponent,
-  sessionLost,
+  sessionlost,
   configuration,
   children,
 }: OidcRoutesProps) => {
@@ -39,15 +39,15 @@ const OidcRoutesComponent = ({
       return <>{callbackComponent}</>
     case silentCallbackPath:
       return <SilentCallback />
-    case '/authentication/not-authenticated':
-      return <>{notAuthenticated}</>
-    case '/authentication/not-authorized':
-      return <>{notAuthorized}</>
-    case '/authentication/session-lost':
-      return <>{sessionLost}</>
+    case '/authentication-error':
+      return <>{unauthenticated}</>
+    case '/authorization-error':
+      return <>{unauthorized}</>
+    case '/session-lost':
+      return <>{sessionlost}</>
     default:
       return <>{children}</>
   }
 }
 
-export const OidcRoutes = memo(OidcRoutesComponent)
+export const OidcRoutes = memo(AuthRoutesComponent)

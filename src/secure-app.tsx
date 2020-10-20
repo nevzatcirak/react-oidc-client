@@ -3,7 +3,7 @@ import React, { ReactNode, useContext, useEffect } from "react";
 import { Authenticating } from "./components/authenticating";
 import { AuthenticationContext } from "./context/authentication-provider";
 
-type OidcSecureProps = {
+type SecureAppProps = {
   children: ReactNode;
   history: History;
 };
@@ -11,12 +11,12 @@ type OidcSecureProps = {
 /**
  * Component redirecting to login screen if no user found or the access token expired
  */
-export const OidcSecure = ({ children, history }: OidcSecureProps) => {
+export const SecureApp = ({ children, history }: SecureAppProps) => {
   const context = useContext(AuthenticationContext);
 
   if (!context) {
     throw new Error(
-      "useOidcAuthentication must be used within a AuthenticationProvider"
+      "useAuthentication must be used within a AuthenticationProvider"
     );
   }
   const { oidcUser, authenticating, login } = context;

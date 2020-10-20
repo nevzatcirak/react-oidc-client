@@ -88,7 +88,7 @@ export class AuthenticationService {
             await this.userManager.signinRedirect({ data: { url } })
           } else {
             this.userRequested = false
-            history.push(`/authentication/session-lost?path=${encodeURI(url)}`)
+            history.push(`/session-lost?path=${encodeURI(url)}`)
           }
         }
         this.userRequested = false

@@ -17,8 +17,8 @@ import {
   removeOidcEvents,
 } from "./oidc-actions";
 import { oidcReducer } from "./oidc-reducer";
-import { CallbackContainer } from "../components/callback";
-import { OidcRoutes } from "../components/oidc-routes";
+import { CallbackContainer } from "../components/authenticated";
+import { OidcRoutes } from "../components/auth-routes";
 import {
   SessionLostContainer,
   SessionLostProps,
@@ -26,9 +26,9 @@ import {
 
 export interface AuthenticationContextState {
   isLoading: boolean;
-  authenticating?: ReactNode;
   oidcUser?: User;
   error?: string;
+  authenticating?: ReactNode;
   login: (force?: boolean) => Promise<void>;
   logout: () => Promise<void>;
   renewToken: () => Promise<void>;
@@ -59,10 +59,10 @@ export interface AuthenticationProviderProps {
   children: ReactNode;
   history: History;
   authenticating?: ReactNode;
-  notAuthenticated?: ReactNode;
-  notAuthorized?: ReactNode;
-  sessionLost?: ElementType<SessionLostProps>;
-  callbackComponentOverride?: ReactNode;
+  unauthenticated?: ReactNode;
+  unauthorized?: ReactNode;
+  sessionlost?: ElementType<SessionLostProps>;
+  authenticated?: ReactNode;
   configuration: UserManagerSettings;
   customEvents?: CustomEvents;
 }
@@ -107,10 +107,10 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
   const { oidcUser, isLoading, error } = oidcState;
   const {
     authenticating,
-    notAuthenticated,
-    notAuthorized,
-    callbackComponentOverride,
-    sessionLost,
+    unauthenticated,
+    unauthorized,
+    authenticated,
+    sessionlost,
     configuration,
     children,
     history,
@@ -132,17 +132,17 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
       }}
     >
       <OidcRoutes
-        notAuthenticated={notAuthenticated}
-        notAuthorized={notAuthorized}
+        unauthenticated={unauthenticated}
+        unauthorized={unauthorized}
         callbackComponent={
           <CallbackContainer
-            callbackComponentOverride={callbackComponentOverride}
+            authenticated={authenticated}
             history={history}
           />
         }
-        sessionLost={
+        sessionlost={
           <SessionLostContainer
-            SessionLostComponentOverride={sessionLost}
+            SessionLostComponentOverride={sessionlost}
             history={history}
             autoAuthenticate={true}
           />
