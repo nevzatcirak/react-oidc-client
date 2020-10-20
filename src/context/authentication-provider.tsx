@@ -26,9 +26,9 @@ import {
 
 export interface AuthenticationContextState {
   isLoading: boolean;
-  authenticating?: ReactNode;
   oidcUser?: User;
   error?: string;
+  authenticating?: ReactNode;
   login: (force?: boolean) => Promise<void>;
   logout: () => Promise<void>;
   renewToken: () => Promise<void>;
