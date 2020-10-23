@@ -16,7 +16,7 @@ export class AuthenticationService {
     this.configuration = configuration;
     this.userManager = new UserManager(configuration);
     Log.logger = console;
-    Log.level = Log.DEBUG;
+    Log.level = Log.INFO;
   }
 
   /**
@@ -112,7 +112,7 @@ export class AuthenticationService {
    * Sends renew token request
    */
   public async renewToken(): Promise<User | undefined> {
-    const oidcUser = await this.userManager.getUser();
+    const oidcUser = await this.userManager?.getUser?.();
     if (oidcUser) return await this.userManager.signinSilent();
   }
 

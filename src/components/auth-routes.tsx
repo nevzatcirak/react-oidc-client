@@ -33,7 +33,7 @@ const AuthRoutesComponent = ({
 
   const silentCallbackPath = getPath(configuration.silent_redirect_uri)
   const callbackPath = getPath(configuration.redirect_uri)
-
+  
   switch (path) {
     case callbackPath:
       return <>{callbackComponent}</>

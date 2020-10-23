@@ -29,10 +29,11 @@ export const onUserUnloaded = (
 };
 
 export const onAccessTokenExpired = async (
-  dispatch: Dispatch<Action>,
+  // dispatch: Dispatch<Action>,
   userManager: UserManager
 ) => {
-  dispatch({ type: "ON_UNLOAD_USER" });
+  /* const user: User | null = await userManager?.getUser?.();
+  dispatch({ type: "ON_LOAD_USER", user}); */
   await userManager.signinSilent();
 };
 
@@ -59,7 +60,7 @@ export const addOidcEvents = ({
   });
   userManager.events.addAccessTokenExpired(() => {
     customEvents?.onAccessTokenExpired?.(userManager);
-    onAccessTokenExpired(dispatch, userManager);
+    onAccessTokenExpired(/* dispatch,  */userManager);
   });
 
   if (customEvents?.onAccessTokenExpiring) {
@@ -95,7 +96,7 @@ export const removeOidcEvents = ({
   });
   userManager.events.removeAccessTokenExpired(() => {
     customEvents?.onAccessTokenExpired?.(userManager);
-    onAccessTokenExpired(dispatch, userManager);
+    onAccessTokenExpired(/* dispatch,  */userManager);
   });
 
   if (customEvents?.onAccessTokenExpiring) {

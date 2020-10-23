@@ -26,7 +26,7 @@ import {
 
 export interface AuthenticationContextState {
   isLoading: boolean;
-  oidcUser?: User;
+  oidcUser?: User | null;
   error?: string;
   authenticating?: ReactNode;
   login: (force?: boolean) => Promise<void>;
@@ -90,7 +90,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
       dispatch,
       userManager: oidcState.userManager,
     });
-    oidcState.userManager.getUser().then((user) => {
+    oidcState.userManager.getUser().then((user: User | null) => {
       if (!user) {
         return;
       }
