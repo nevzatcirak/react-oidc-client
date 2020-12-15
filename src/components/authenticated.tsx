@@ -29,7 +29,6 @@ export const CallbackContainer = ({ authenticated, history }: CallbackContainerP
         }
       } catch (error) {
         console.error(`Authentication could not be done. Detailed message : ${error.message}`)
-        history.push(`/authentication-error?message=${encodeURIComponent(error.message)}`)
       }
     }
 
