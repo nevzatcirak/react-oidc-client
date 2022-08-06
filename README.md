@@ -1,8 +1,8 @@
 # @nevzatcirak/react-oidc-client
 
-> **@nevzatcirak/react-oidc-client** package is a convenience wrapper around the `oidc-client` library to make it available in React by using hooks and context api.
+> **@nevzatcirak/react-oidc-client** package is a convenience wrapper around the `oidc-client-ts` library to make it available in React by using hooks and context api.
 
-> [**oidc-client**](https://github.com/IdentityModel/oidc-client-js/wiki) is a JavaScript library intended to run in browsers. It provides protocol support for OIDC and OAuth2, as well as management functions for user sessions and access tokens management.
+> [**oidc-client-ts**](https://github.com/authts/oidc-client-ts#readme) is a JavaScript library intended to run in browsers. It provides protocol support for OIDC and OAuth2, as well as management functions for user sessions and access tokens management.
 
 ### Usage
 There are 3 components and 1 hook that you can use. They are ***`ComposedAuthProvider`*** , ***`AuthenticationProvider`*** , ***`SecureApp`*** and ***`useAuthentication`*** .
@@ -10,14 +10,14 @@ There are 3 components and 1 hook that you can use. They are ***`ComposedAuthPro
 > ***Note:*** You can find detailed example project [in this repository](https://github.com/nevzatcirak/react-oidc-client-usage-example).
 
 ##### ***SecureApp***
-***SecureApp*** component will manage authenticating and the access token expired situation. Also, this component will redirect app to login screen, when no user found. 
+***SecureApp*** component will manage authenticating and the access token expired situation. Also, this component will redirect app to login screen, when no user found.
 
 > ***Hint:*** This component must be used inside the ***`BrowserRouter`*** and ***`AuthenticationProvider`*** .
 
 ***Props***
 
 |Mandatory      | Name            | Description                             |
-|:------------: | ------------- | :-------------------------------------:   |       
+|:------------: | ------------- | :-------------------------------------:   |
 | ✔             | children        | Child components of the component       |
 | ✔             | history         | Navigation object is from react-router  |
 
@@ -27,7 +27,7 @@ There are 3 components and 1 hook that you can use. They are ***`ComposedAuthPro
 ***Props***
 
 |Mandatory      | Name            | Description                             |
-|:------------: | ------------- | -------------------------------------   |       
+|:------------: | ------------- | -------------------------------------   |
 | ✔             | children        | Child components of the component       |
 | ✔             | history         | Navigation object is from react-router  |
 | ✔             | configuration   | Configuration object of oidc-client. Details are [here](https://github.com/IdentityModel/oidc-client-js/wiki#configuration).|
@@ -47,7 +47,7 @@ In ***`ComposedAuthProvider`*** component, ***`AuthenticationProvider`*** and Se
 ***Props***
 
 |Mandatory      | Name            | Description                             |
-|:------------: | -------------   | -------------------------------------   |       
+|:------------: | -------------   | -------------------------------------   |
 | ✔             | children        | Child components of the component       |
 | ✔             | configuration   | Configuration object of oidc-client. This property is same with ***AuthenticationProvider’s configuration*** property.|
 | ❔             | isActive        | This prop is related with provider activity status. If value is true, provider will be active and openid client will begin to work.        |
@@ -150,7 +150,7 @@ This hook is created by using ***`AuthenticationContext`*** . *AuthenticationCon
 ***AuthenticationContext State***
 
 |Name           | Type                  | Description                             |
-|------------   | --------------------  | ---------------|       
+|------------   | --------------------  | ---------------|
 | isLoading     | boolean               | Openid User loading status. ``(Default: false)`` |
 | oidcUser      | User (details here)   | Openid User ``(Default: undefined)``|
 | error         | String                | An error message while logging in or out Openid User ``(Default: undefined)`` |

@@ -1,43 +1,48 @@
 {
-  "compilerOptions": {
-    "outDir": "dist/",
-    "rootDir": "src/",
-    "pretty": true,
-    "target": "es6",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "jsx": "react",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-
-    "declaration": true,
-    "sourceMap": false,
-    "composite": true,
-    "noEmitOnError": true,
-
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictPropertyInitialization": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    "skipLibCheck": true,
-
-    "alwaysStrict": true,
-    "preserveConstEnums": true,
-    "allowSyntheticDefaultImports": true,
-    "importHelpers": true,
-    "esModuleInterop": true,
-
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+    "compilerOptions": {
+        // match output dir to input dir. e.g. dist/index instead of dist/src/index
+        "rootDir": "src/",
+        "outDir": "dist/",
+        "pretty": true,
+        "target": "ES2019",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        // transpile JSX to React.createElement
+        "jsx": "react",
+        "lib": [
+            "DOM",
+            "DOM.Iterable",
+            "ES2019"
+        ],
+        "allowJs": true,
+        "incremental": true,
+        "tsBuildInfoFile": "tsconfig.tsbuildinfo",
+        // output .d.ts declaration files for consumers
+        "declaration": true,
+        "declarationMap": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        // significant perf increase by skipping checking .d.ts files, particularly those in node_modules. Recommended by TS
+        "skipLibCheck": true,
+        "preserveConstEnums": true,
+        "allowSyntheticDefaultImports": true,
+        "importHelpers": true,
+        // ensure type imports are side-effect free by enforcing that `import type` is used
+        "importsNotUsedAsValues": "preserve",
+        // interop between ESM and CJS modules. Recommended by TS
+        "esModuleInterop": true,
+        // prevent the use features that do not work with isolated transpilation
+        "isolatedModules": true,
+        // stricter type-checking for stronger correctness. Recommended by TS
+        "strict": true,
+        // error out if import and file system have a casing mismatch. Recommended by TS
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true
+    },
+    "include": [
+        "src",
+        "types"
+    ]
 }

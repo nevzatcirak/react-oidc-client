@@ -1,6 +1,6 @@
-import { History } from "history";
-import React, { ElementType, useEffect } from "react";
-import { AuthenticationService } from "../services/authentication-service";
+import {History} from "history";
+import React, {ElementType, useEffect} from "react";
+import {AuthenticationService} from "../services/authentication-service";
 
 export type SessionLostProps = {
   onAuthenticate: () => void;
@@ -32,7 +32,7 @@ export const SessionLostContainer = ({
 
   const onAuthenticate = () => {
     const authService: AuthenticationService = AuthenticationService.getInstance();
-    authService.authenticate(history.location, history)(true, callbackPath);
+    authService.authenticate(history.location)(true, callbackPath);
   };
 
   useEffect(() => {

@@ -1,25 +1,36 @@
 {
   "name": "@nevzatcirak/react-oidc-client",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "React components and service for oidc authentication",
-  "main": "dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "homepage": "https://github.com/nevzatcirak/react-oidc-client#readme",
+  "main": "dist/umd/react-oidc-client.js",
+  "types": "dist/types/react-oidc-client.d.ts",
   "keywords": [
     "react",
+    "react-component",
     "oidc",
+    "oauth2",
+    "openid",
+    "OpenID Connect",
     "browser",
     "typescript",
     "oidc-client",
-    "nevzatcirak"
+    "nevzatcirak",
+    "infra",
+    "authentication",
+    "context-api"
   ],
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
-    "prebuild": "rimraf dist",
-    "build": "tsc -b",
+    "build": "node scripts/build.js && npm run build-types",
+    "build-types": "tsc --emitDeclarationOnly",
+    "clean": "git clean -fdX dist",
+    "prepack": "npm run build",
+    "lint": "eslint --max-warnings=0 --cache .",
+    "prepare": "husky install",
     "p": "npm publish --access public"
   },
   "repository": {
@@ -32,28 +43,48 @@
     "url": "https://github.com/nevzatcirak/react-oidc-client/issues"
   },
   "dependencies": {
-    "oidc-client": "^1.10.1",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
-    "tslib": "^2.0.1"
+    "oidc-client-ts": "^2.0.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^17.0.1",
+    "oidc-client-ts": "^2.0.0"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.10.5",
-    "@types/jest": "^26.0.9",
-    "@types/react": "^16.9.44",
-    "@types/react-dom": "^16.9.8",
-    "@types/react-router": "^5.1.8",
-    "@types/react-router-dom": "^5.1.2",
+    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/react": "^13.1.1",
+    "@types/react-router": "^5.1.12",
+    "@types/react-router-dom": "^5.1.7",
     "@types/history": "^4.7.7",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.15.1",
-    "enzyme-to-json": "^3.5.0",
-    "jest": "^26.2.2",
-    "ts-jest": "^26.1.4",
-    "typescript": "^3.9.7"
+    "@types/react": "^18.0.6",
+    "@types/react-dom": "^18.0.2",
+    "@types/react-test-renderer": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "history": "^5.3.0",
+    "esbuild": "^0.14.1",
+    "eslint": "^8.4.1",
+    "eslint-plugin-testing-library": "^5.0.0",
+    "husky": "^8.0.1",
+    "jest": "^27.2.0",
+    "jest-mock": "^27.4.2",
+    "lint-staged": "^13.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-test-renderer": "^18.0.0",
+    "ts-jest": "^27.0.5",
+    "tslib": "^2.2.0",
+    "typescript": "^4.2.4",
+    "yn": "^5.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/nevzatcirak/react-oidc-client#readme"
+  "engines": {
+    "node": ">=12.13.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
+  }
 }

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { AuthenticationService } from '../services/authentication-service'
+import React, {useEffect} from 'react'
+import {AuthenticationService} from '../services/authentication-service'
 
 export const SilentCallback = () => {
   useEffect(() => {

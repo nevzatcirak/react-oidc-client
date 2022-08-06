@@ -1,9 +1,9 @@
-import { UserManagerSettings } from 'oidc-client'
-import React, { memo, ReactNode, useEffect, useState } from 'react'
-import { getPath } from '../utils/route-utils'
-import { UnAuthenticated } from './unauthenticated'
-import { UnAuthorized } from './unauthorized'
-import { SilentCallback } from './silent-callback'
+import {UserManagerSettings} from 'oidc-client-ts'
+import React, {memo, ReactNode, useEffect, useState} from 'react'
+import {getPath} from '../utils/route-utils'
+import {UnAuthenticated} from './unauthenticated'
+import {UnAuthorized} from './unauthorized'
+import {SilentCallback} from './silent-callback'
 
 export type OidcRoutesProps = {
   unauthenticated?: ReactNode
@@ -33,7 +33,7 @@ const AuthRoutesComponent = ({
 
   const silentCallbackPath = getPath(configuration.silent_redirect_uri)
   const callbackPath = getPath(configuration.redirect_uri)
-
+  
   switch (path) {
     case callbackPath:
       return <>{callbackComponent}</>

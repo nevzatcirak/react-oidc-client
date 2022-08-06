@@ -1,4 +1,4 @@
-import { State, Action } from "./oidc-types";
+import {Action, State} from "./oidc-types";
 
 export function oidcReducer(state: State, action: Action) {
   switch (action.type) {
