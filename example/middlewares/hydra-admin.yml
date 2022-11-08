@@ -1,0 +1,21 @@
+http:
+  routers:
+    hydra-admin:
+      entryPoints:
+        - web
+      rule: Host(`localhost`) && PathPrefix(`/hydra-admin`)
+      service: hydra-admin
+      middlewares:
+        - hydra-admin
+
+  services:
+    hydra-admin:
+      loadBalancer:
+        servers:
+          - url: http://hydra:4445/
+
+  middlewares:
+    hydra-admin:
+      stripPrefix:
+        prefixes:
+          - /hydra-admin

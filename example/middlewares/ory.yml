@@ -1,0 +1,23 @@
+http:
+  routers:
+    ory:
+      entryPoints:
+        - web
+      rule: Host(`localhost`)
+      service: ory
+#      middlewares:
+#        - ory-auth
+
+  services:
+    ory:
+      loadBalancer:
+        servers:
+#          - url: http://ory-web:3000/
+          - url: http://172.17.0.1:3000/
+
+#
+#  middlewares:
+#    ory-auth:
+#      stripPrefix:
+#        prefixes:
+#          - /auth

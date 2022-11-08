@@ -1,0 +1,66 @@
+version: v0.5.5-alpha.1
+
+serve:
+  public:
+    cors:
+      enabled: true
+
+hashers:
+  argon2:
+    parallelism: 1
+    memory: 131072
+    iterations: 1
+    salt_length: 16
+    key_length: 16
+
+identity:
+  default_schema_url: file:///etc/config/kratos/identity.schema.json
+
+selfservice:
+  default_browser_return_url: http://localhost
+  whitelisted_return_urls:
+    - http://auth.localhost
+    - http://localhost
+    - http://localhost:3000
+    - http://localhost/kratos
+    - http://localhost/hydra
+    - http://traefik.localhost
+    - http://oauth.localhost/_oauth
+
+  methods:
+#    password:
+#      enabled: true
+    oidc:
+      enabled: true
+      config:
+        providers: []
+    link:
+      enabled: true
+
+  flows:
+    settings:
+      privileged_session_max_age: 1m
+      after:
+        profile:
+          hooks:
+            - hook: verify
+
+    login:
+      lifespan: 10m
+
+    verification:
+      enabled: true
+
+    registration:
+      lifespan: 10m
+      after:
+        password:
+          hooks:
+            - hook: session
+    recovery:
+      enabled: true
+      lifespan: 10m
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true

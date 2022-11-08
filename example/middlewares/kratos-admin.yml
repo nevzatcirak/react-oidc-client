@@ -1,0 +1,21 @@
+http:
+  routers:
+    kratos-admin:
+      entryPoints:
+        - web
+      rule: Host(`localhost`) && PathPrefix(`/kratos-admin`)
+      service: kratos-admin
+      middlewares:
+        - kratos-admin
+
+  services:
+    kratos-admin:
+      loadBalancer:
+        servers:
+          - url: http://kratos:4434/
+
+  middlewares:
+    kratos-admin:
+      stripPrefix:
+        prefixes:
+          - /kratos-admin

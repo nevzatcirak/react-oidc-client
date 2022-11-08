@@ -1,0 +1,176 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:2.2.1
+    container_name: traefik
+    restart: always
+    environment:
+      - TZ=Europe/Istanbul
+    #      - DO_AUTH_TOKEN=4b12d2593b05835437f6fd5d344db398b6b4c1d85f2f4ea116b97a0def6be211
+    ports:
+      #      - 8080:8080
+      - 80:80
+    #      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./configuration:/etc/traefik
+      - ./middlewares:/conf
+    networks:
+      base-net:
+        aliases:
+          - traefik
+
+  hydra:
+    image: nevzatcirak/hydra:v1.10-alpine
+    ports:
+      - "4444:4444" # Public port
+      - "4445:4445" # Admin port
+    #      - "5555:5555" # Port for hydra token user
+    volumes:
+      - type: bind
+        source: ./hydra/config
+        target: /etc/config/hydra
+    environment:
+      DSN: postgres://hydra:pa55w0rd@auth-db:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+      LOG_LEVEL: ${LOG_LEVEL}
+      URLS_SELF_ISSUER: ${ORY_DOMAIN}/hydra
+      URLS_SELF_PUBLIC: ${ORY_DOMAIN}/hydra
+      URLS_CONSENT: http://localhost:3000/consent #${ORY_DOMAIN}/consent
+      URLS_LOGIN: http://localhost:3000/login #${ORY_DOMAIN}/login
+      URLS_LOGOUT: http://localhost:3000/logout #${ORY_DOMAIN}/logout
+      SECRETS_SYSTEM: ${SIGNING_SECRET}
+      OAUTH2_PKCE_ENFORCED_FOR_PUBLIC_CLIENTS: "true"
+    restart: unless-stopped
+    hostname: hydra
+    depends_on:
+      - auth-db
+      - traefik
+    networks:
+      base-net:
+        aliases:
+          - hydra
+    command:
+      - sh
+      - -c
+      - |
+        echo "SELECT 'CREATE DATABASE ${HYDRA_DB_NAME}' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${HYDRA_DB_NAME}')\gexec" | psql > /dev/null
+        hydra migrate -c /etc/config/hydra/.hydra.yml sql -e --yes
+        hydra serve -c /etc/config/hydra/.hydra.yml all --dangerous-force-http
+
+  kratos:
+    image: nevzatcirak/kratos:v0.5.5-alpha.1.pre.1
+    #    ports:
+    #      - "4433:4433" # public
+    #      - "4434:4434" # admin
+    restart: unless-stopped
+    hostname: kratos
+    environment:
+      DSN: postgres://hydra:pa55w0rd@auth-db:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+      LOG_LEVEL: ${LOG_LEVEL}
+      #      COURIER_SMTP_FROM_ADDRESS: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+      SERVE_PUBLIC_BASE_URL: ${KRATOS_PUBLIC_URL}
+      SERVE_ADMIN_BASE_URL: ${KRATOS_ADMIN_URL}
+      #      SELFSERVICE_WHITELISTED_RETURN_URLS: ${ORY_DOMAIN}
+      #      SELFSERVICE_DEFAULT_BROWSER_RETURN_URL: ${ORY_DOMAIN}/
+      SELFSERVICE_FLOWS_LOGIN_UI_URL: http://localhost:3000/login #${ORY_DOMAIN}/login
+      SELFSERVICE_FLOWS_REGISTRATION_UI_URL: http://localhost:3000/signup #${ORY_DOMAIN}/signup
+      SELFSERVICE_FLOWS_VERIFICATION_UI_URL: http://localhost:3000/verify #${ORY_DOMAIN}/verify
+      SELFSERVICE_FLOWS_RECOVERY_UI_URL: http://localhost:3000/recovery #${ORY_DOMAIN}/recovery
+      SELFSERVICE_FLOWS_SETTINGS_UI_URL: http://localhost:3000/settings #${ORY_DOMAIN}/settings
+      SELFSERVICE_FLOWS_ERROR_UI_URL: http://localhost:3000/error #${ORY_DOMAIN}/error
+      SECRETS_DEFAULT: ${SIGNING_SECRET}
+    depends_on:
+      - auth-db
+      - traefik
+    volumes:
+      -
+        type: bind
+        source: ./kratos/config
+        target: /etc/config/kratos
+    command:
+      - sh
+      - -c
+      - |
+        echo "SELECT 'CREATE DATABASE ${HYDRA_DB_NAME}' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${HYDRA_DB_NAME}')\gexec" | psql > /dev/null
+        kratos migrate -c /etc/config/kratos/.kratos.yml sql -e --yes
+        kratos serve -c /etc/config/kratos/.kratos.yml --dev
+    networks:
+      base-net:
+        aliases:
+          - kratos
+
+  auth-db:
+    image: postgres:9.6
+    hostname: auth-db
+    environment:
+      - POSTGRES_USER=hydra
+      - POSTGRES_PASSWORD=pa55w0rd
+      - POSTGRES_DB=hydra
+    #    volumes:
+    #      - hydra-db:/var/lib/postgresql/data
+    networks:
+      base-net:
+        aliases:
+          - auth-db
+
+#  web:
+#    image: nevzatcirak/auth-ui:0.0.1
+#    hostname: ory-web
+#    environment:
+#      BASE_URL: ${ORY_DOMAIN}
+#      NEXT_PUBLIC_BASE_URL: ${ORY_DOMAIN}
+#      LOG_LEVEL: debug
+#      KRATOS_ADMIN_URL: ${KRATOS_ADMIN_URL}
+#      KRATOS_PUBLIC_URL: ${KRATOS_PUBLIC_URL}
+#      HYDRA_PUBLIC_URL:  ${HYDRA_PUBLIC_URL}
+#      HYDRA_ADMIN_URL: ${HYDRA_ADMIN_URL}
+#      SIGNING_SECRET: ${SIGNING_SECRET}
+#      SESSION_COOKIE_NAME: ${SESSION_COOKIE_NAME}
+#      NEXT_PUBLIC_LOGO_URL: ${LOGO_URL}
+#      NEXT_PUBLIC_APP_NAME: ${APP_NAME}
+#      NEXT_PUBLIC_THEME_PRIMARY_COLOR: ${THEME_PRIMARY_COLOR}
+#      OAUTH_CLIENT_ID: auth
+#      OAUTH_CLIENT_SECRET: nevzatcirak
+#      OAUTH_AUDIENCE: my-audience
+#    depends_on:
+#      - hydra
+#      - kratos
+#    extra_hosts:
+#      - "localhost:172.17.0.1"
+##    ports:
+##      - "3000:3000"
+##      - "9229:9229"
+##    command: npm run start
+#    networks:
+#      base-net:
+#        aliases:
+#          - ory-web
+#    volumes:
+#      - ./web/app/src:/usr/src/app/src
+#      - ./web/app/public:/usr/src/app/public
+#      - ./web/app/img:/usr/src/app/img
+
+networks:
+  base-net:
+    name: base-net
+    ipam:
+      config:
+        - subnet: 172.19.0.0/22
+
+volumes:
+  hydra-db:
+
+#  docker-compose exec hydra \
+#  hydra clients create \
+#  --endpoint http://127.0.0.1:4445 \
+#  --post-logout-callbacks http://localhost:3001 \
+#  --name oidc-auth \
+#  --id oidc-auth \
+#  --grant-types authorization_code,refresh_token \
+#  --response-types code,id_token \
+#  --scope openid,refresh-token,email,profile \
+#  --callbacks http://localhost:3001/auth-callback,http://localhost:3001/auth-silent-callback \
+#  --token-endpoint-auth-method none
+
+

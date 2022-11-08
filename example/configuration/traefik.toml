@@ -1,0 +1,53 @@
+[providers]
+    [providers.docker]
+        network= "base-net"
+        endpoint = "unix:///var/run/docker.sock"
+        watch = true
+        exposedByDefault = false
+    [providers.file]
+        directory = "/conf"
+
+[entryPoints]
+    [entryPoints.web]
+        address = ":80"
+#        [entryPoints.web.http.redirections]
+#        [entryPoints.web.http.redirections.entryPoint]
+#            to= "websecure"
+#            scheme= "https"
+#    [entryPoints.websecure]
+#        address = ":443"
+#        [entryPoints.websecure.http.tls]
+#            certResolver = "acmenevzatcirakresolver"
+#            [[entryPoints.websecure.http.tls.domains]]
+#                main = "localhost"
+#                sans = ["*.localhost"]
+
+[api]
+    insecure= true
+    dashboard= true
+
+[retry]
+
+#[certificatesResolvers.acmenevzatcirakresolver.acme]
+#email = "admin@localhost"
+#storage = "/etc/traefik/acme/acme.json"
+#[certificatesResolvers.acmenevzatcirakresolver.acme.tlsChallenge]
+#[certificatesResolvers.acmenevzatcirakresolver.acme.dnsChallenge]
+#provider = "digitalocean"
+#delayBeforeCheck = 0
+
+[accessLog]
+    [accessLog.fields]
+        [accessLog.fields.names]
+            StartUTC= "drop"
+
+[log]
+    level= "DEBUG"
+
+#[experimental]
+#    [experimental.devPlugin]
+#        goPath= "/traefik-plugins-go-path"
+#        moduleName= "github.com/nevzatcirak/traefik-oauth2-middleware"
+
+#[pilot]
+#    token = "052941f2-c6ef-4779-9a29-814c66794d96"

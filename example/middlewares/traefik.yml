@@ -1,0 +1,28 @@
+http:
+  routers:
+    traefik:
+      entryPoints:
+        - web
+      rule: Host(`localhost`) && PathPrefix(`/traefik`)
+      service: api@internal
+      middlewares:
+#        - forward-oauth
+    root:
+      entrypoints: websecure
+      rule: Host(`localhost`)
+      service: dummy-svc
+      middlewares:
+        - base-context
+#        - forward-oauth
+
+  services:
+    dummy-svc:
+      loadBalancer:
+        server:
+          port: 9999
+
+  middlewares:
+    base-context:
+      redirectRegex:
+        regex: ^http://localhost/?$$
+        replacement: http://localhost/

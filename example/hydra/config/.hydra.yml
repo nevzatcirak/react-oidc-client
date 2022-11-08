@@ -1,0 +1,42 @@
+serve:
+  public:
+    cors:
+      enabled: true
+      allowed_methods:
+        - POST
+        - GET
+        - PUT
+        - PATCH
+        - DELETE
+      allowed_headers:
+        - Authorization
+      exposed_headers:
+        - Content-Type
+
+  cookies:
+    same_site_mode: Lax
+
+strategies:
+  access_token: jwt
+
+log:
+  leak_sensitive_values: true
+
+oidc:
+  dynamic_client_registration:
+    default_scope:
+      - openid
+      - offline
+      - offline_access
+      - refresh_token
+      - email
+      - profile
+
+webfinger:
+  oidc_discovery:
+    supported_scope:
+      - email
+      - profile
+
+
+
