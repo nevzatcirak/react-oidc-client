@@ -75,7 +75,7 @@ export const getServerSideProps: GetServerSideProps<LoginPageProps> = withIronSe
             const {data: accepted_request} = await hydra_admin_client.acceptLoginRequest(query.login_challenge, {
                 subject: login_session.identity.id,
                 context: login_session,
-                remember: true,
+                remember: false,
                 remember_for: 0,
             });
             await req.session.destroy();

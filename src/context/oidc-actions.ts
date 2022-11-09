@@ -36,6 +36,7 @@ export const onAccessTokenExpired = async (
     const oidcUser = await userManager?.getUser?.();
     if (oidcUser) {
         try {
+            debugger
             return await userManager.signinSilent();
         } catch (e) {
             console.log(e);

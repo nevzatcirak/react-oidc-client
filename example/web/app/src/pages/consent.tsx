@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps<ConsentPageProps> = withIron
       const { data: accepted_request } = await hydra_admin_client.acceptConsentRequest(query.consent_challenge, {
         grant_scope: consent_request.requested_scope,
         grant_access_token_audience: consent_request.requested_access_token_audience,
-        remember: true,
+        remember: false,
         remember_for: 0,
         session: {
           access_token: {

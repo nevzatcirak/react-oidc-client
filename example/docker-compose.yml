@@ -41,6 +41,7 @@ services:
       URLS_LOGOUT: http://localhost:3000/logout #${ORY_DOMAIN}/logout
       SECRETS_SYSTEM: ${SIGNING_SECRET}
       OAUTH2_PKCE_ENFORCED_FOR_PUBLIC_CLIENTS: "true"
+      TTL_ACCESS_TOKEN: 1m
     restart: unless-stopped
     hostname: hydra
     depends_on:
@@ -114,6 +115,36 @@ services:
         aliases:
           - auth-db
 
+  hydra-oidc-client:
+    image: nevzatcirak/hydra:v1.10-alpine
+    hostname: hydra-client
+    depends_on:
+      - hydra
+    command:
+      - sh
+      - -c
+      - |
+        hydra clients create --endpoint http://host.docker.internal:4445 --post-logout-callbacks http://localhost:1234/ --name oidc-auth-1 --id oidc-auth-1 --grant-types authorization_code,refresh_token --response-types code,id_token --scope openid,email,profile,offline_access --callbacks http://localhost:1234/ --token-endpoint-auth-method none
+    networks:
+      base-net:
+        aliases:
+          - hydra-oidc-client
+
+  core-client:
+    image: nevzatcirak/hydra:v1.10-alpine
+    hostname: core-client
+    depends_on:
+      - hydra
+    command:
+      - sh
+      - -c
+      - |
+        hydra clients create --endpoint http://host.docker.internal:4445 --post-logout-callbacks http://localhost:1234/ --name oidc-infra --id oidc-infra --grant-types authorization_code,refresh_token --response-types code,id_token --scope openid,email,profile,offline_access --callbacks http://localhost:1234/authentication-callback,http://localhost:1234/authentication-silent_callback --token-endpoint-auth-method none
+    networks:
+      base-net:
+        aliases:
+          - core-client
+
 #  web:
 #    image: nevzatcirak/auth-ui:0.0.1
 #    hostname: ory-web
@@ -160,17 +191,3 @@ networks:
 
 volumes:
   hydra-db:
-
-#  docker-compose exec hydra \
-#  hydra clients create \
-#  --endpoint http://127.0.0.1:4445 \
-#  --post-logout-callbacks http://localhost:3001 \
-#  --name oidc-auth \
-#  --id oidc-auth \
-#  --grant-types authorization_code,refresh_token \
-#  --response-types code,id_token \
-#  --scope openid,refresh-token,email,profile \
-#  --callbacks http://localhost:3001/auth-callback,http://localhost:3001/auth-silent-callback \
-#  --token-endpoint-auth-method none
-
-

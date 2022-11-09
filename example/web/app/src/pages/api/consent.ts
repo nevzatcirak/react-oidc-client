@@ -34,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: accepted_request } = await hydra_admin_client.acceptConsentRequest(req.body.challenge, {
       grant_scope,
       grant_access_token_audience: consent_request.requested_access_token_audience,
-      remember: Boolean(req.body.remember),
+      remember: false,//Boolean(req.body.remember),
       remember_for: 0,
       session: {
         access_token: {

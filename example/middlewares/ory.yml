@@ -13,7 +13,7 @@ http:
       loadBalancer:
         servers:
 #          - url: http://ory-web:3000/
-          - url: http://172.17.0.1:3000/
+          - url: http://host.docker.internal:3000/
 
 #
 #  middlewares:
