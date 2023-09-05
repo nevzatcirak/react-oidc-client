@@ -20,6 +20,13 @@
     "authentication",
     "context-api"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/esm/react-oidc-client.js",
+      "require": "./dist/umd/react-oidc-client.js"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist"
   ],
