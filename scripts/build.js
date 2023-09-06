@@ -9,8 +9,9 @@ const opts = {
     absWorkingDir: join(__dirname, ".."),
     bundle: true,
     sourcemap: true,
-    external: Object.keys({ ...dependencies, ...peerDependencies }),
 };
+
+const external = Object.keys({ ...dependencies, ...peerDependencies });
 
 try {
     // esm
@@ -18,12 +19,30 @@ try {
         ...opts,
         platform: "neutral",
         outfile: "dist/esm/react-oidc-client.js",
+        external,
     });
     // node
     buildSync({
         ...opts,
         platform: "node",
         outfile: "dist/umd/react-oidc-client.js",
+        external,
+    });
+
+    // browser (self contained)
+    buildSync({
+        ...opts,
+        platform: "browser",
+        outfile: "dist/browser/react-oidc-client.js",
+        globalName: "reactoidcclient",
+    });
+    // browser-min (self contained)
+    buildSync({
+        ...opts,
+        platform: "browser",
+        outfile: "dist/browser/react-oidc-client.min.js",
+        globalName: "reactoidcclient",
+        minify: true,
     });
 } catch (err) {
     // esbuild handles error reporting

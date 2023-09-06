@@ -33,8 +33,10 @@ typings/
 .env
 
 # build
+lib
 dist
 !dist/esm/package.json
+temp
 
 # idea
 .idea

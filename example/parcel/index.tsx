@@ -4,17 +4,17 @@ import {BrowserRouter} from "react-router-dom";
 
 import {ComposedAuthProvider, useAuthentication, WebStorageStateStore } from "../../src/.";
 
-const rootPath = "http://localhost:1234/";
+const rootPath = "https://dev.net/test/";
 
 export const webStorageStateStore = new WebStorageStateStore({store: window.localStorage});
 
 export const configuration = {
-    client_id: "oidc-infra",
+    client_id: "oidc-test",
     redirect_uri: rootPath + "authentication-callback",
     response_type: "code",
     post_logout_redirect_uri: rootPath,
     scope: "openid offline_access",
-    authority: "http://localhost/hydra",
+    authority: "https://dev.net/oauth2",
     silent_redirect_uri: rootPath + "authentication-silent_callback",
     //accessTokenExpiringNotificationTime: 5,
     automaticSilentRenew: false,

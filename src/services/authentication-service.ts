@@ -1,6 +1,9 @@
 import {Log, User, UserManager, UserManagerSettings} from "oidc-client-ts";
 import {Location} from 'history';
 
+/**
+ * @public
+ */
 export class AuthenticationService {
     private static instance: AuthenticationService;
     public userManager: UserManager;
@@ -21,7 +24,6 @@ export class AuthenticationService {
 
     /**
      * Initialize openid connection configs and creates singleton instance of AuthenticationFacade
-     * @param configuration
      */
     public static initInstance(configuration: UserManagerSettings): AuthenticationService {
         if (!AuthenticationService.instance) {
@@ -63,9 +65,6 @@ export class AuthenticationService {
 
     /**
      * Authenticate oidc user
-     * @param user
-     * @param location
-     * @param history
      */
     public authenticate(
         location: Location,

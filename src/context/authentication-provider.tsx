@@ -8,6 +8,9 @@ import {CallbackContainer} from "../components/authenticated";
 import {OidcRoutes} from "../components/auth-routes";
 import {SessionLostContainer, SessionLostProps,} from "../components/session-lost";
 
+/**
+ * @public
+ */
 export interface AuthenticationContextState {
     isLoading: boolean;
     oidcUser?: User | null;
@@ -18,8 +21,14 @@ export interface AuthenticationContextState {
     renewToken: () => Promise<void>;
 }
 
+/**
+ * @public
+ */
 export const AuthenticationContext = createContext<AuthenticationContextState | undefined>(undefined);
 
+/**
+ * @public
+ */
 export interface CustomEvents {
     /** Subscribe to events raised when user session has been established (or re-established) */
     onUserLoaded?: (user: User) => void;
@@ -37,6 +46,9 @@ export interface CustomEvents {
     onAccessTokenExpired?: (userManager: UserManager) => void;
 }
 
+/**
+ * @public
+ */
 export interface AuthenticationProviderProps {
     children: ReactNode;
     history: History;
@@ -59,6 +71,9 @@ const setDefaultState = (configuration: UserManagerSettings) => {
     };
 };
 
+/**
+ * @public
+ */
 export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
     const [oidcState, dispatch] = useReducer(
         oidcReducer,

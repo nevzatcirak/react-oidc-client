@@ -10,6 +10,8 @@ type SecureAppProps = {
 
 /**
  * Component redirecting to login screen if no user found or the access token expired
+ *
+ * @public
  */
 export const SecureApp = ({children}: SecureAppProps) => {
     const context = useAuthentication();

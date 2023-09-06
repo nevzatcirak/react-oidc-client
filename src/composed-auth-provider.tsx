@@ -3,6 +3,9 @@ import React, {ReactNode} from "react";
 import {useHistory} from "react-router-dom";
 import {getBoolValue} from "./utils/common-utils";
 
+/**
+ * @public
+ */
 export interface ComposedAuthProviderProps {
   children: ReactNode;
   configuration: UserManagerSettings;
@@ -14,6 +17,9 @@ export interface ComposedAuthProviderProps {
   authenticated?: ReactNode;
 }
 
+/**
+ * @public
+ */
 export const ComposedAuthProvider = (props: ComposedAuthProviderProps) => {
   const history = useHistory();
 
